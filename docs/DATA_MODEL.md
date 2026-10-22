@@ -11,7 +11,7 @@ Les dates sont des horodatages serveur (`serverTimestamp`). `expireAt` permet d'
 | `users/{uid}` | le profil du compte connecté (et sa surveillance pendant la session) | jamais |
 | `licenses` | `where userId == uid` | jamais |
 | `products` | produits publiés (`status in [published, unavailable, active]`) | jamais |
-| `apProjects`, `atProjects`, `aiProjects`, `swDocs`, `scDocs`, `ssDocs` | `where ownerUid == uid` (fiches seulement, jamais `content/main` sauf relecture du document créé) | `swDocs` : création d'un document uniquement |
+| `apProjects`, `atProjects`, `swDocs`, `scDocs`, `ssDocs` | `where ownerUid == uid` (fiches seulement, jamais `content/main` sauf relecture du document créé) | `swDocs` : création d'un document uniquement |
 | `apShares`, `atShares`, `aiShares`, `swShares`, `scShares`, `ssShares` | `where email == e-mail du compte` | jamais |
 | `swUsage/{uid}` | pour la création d'un document | initialisation et incrément, comme l'application |
 
