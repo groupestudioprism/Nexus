@@ -1,5 +1,5 @@
 /* Accès aux données PROPRES à Nexus (Firestore), regroupées sous nxUsers/{uid} : une personne ne lit et n'écrit que les siennes
- * (imposé par firebase/firestore-nexus.rules). Aucune copie des données des applications n'est conservée ici : seulement des
+ * (imposé par les règles Firestore, Studio-Prism/firebase/rules/30-nexus.rules). Aucune copie des données des applications n'est conservée ici : seulement des
  * références (identifiant, nom) et des résumés courts.
  *
  *   nxUsers/{uid}                    préférences Nexus

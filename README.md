@@ -38,7 +38,6 @@ src/ui/               coque, composants, pages ; src/styles/ : jetons et styles
 assets/brand/         logo Nexus (SVG + planche d'origine)
 firebase/             règles Firestore à publier À LA MAIN
 tests/                unitaires, règles (émulateur), bout en bout (Playwright)
-tools/build_rules.py  assemble règles communes + bloc Nexus
 docs/                 audit, architecture, modèle de données, tests, déploiement
 ```
 
@@ -65,7 +64,7 @@ En local, Nexus se connecte au **vrai** projet Firebase (si `localhost` est un d
 
 ## Règles Firebase à publier manuellement
 
-`firebase/firestore.rules` (fichier complet) ou `firebase/firestore-nexus.rules` (bloc seul). Mode d'emploi, vérification de la version en ligne et scénarios de contrôle : [`firebase/README.md`](firebase/README.md). **Storage : aucune modification.**
+Les règles Firestore (dont le bloc Nexus) sont dans le dépôt **Studio-Prism**, source unique pour tout le projet Firebase (`firebase/rules/30-nexus.rules`). Mode d'emploi, vérification de la version en ligne et scénarios de contrôle : [`firebase/README.md`](firebase/README.md). **Storage : aucune modification.**
 
 ## Tests
 

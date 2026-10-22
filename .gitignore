@@ -7,3 +7,4 @@ ui-debug.log
 .env.*
 tests/e2e/artifacts/
 __pycache__/
+firebase/firestore.rules

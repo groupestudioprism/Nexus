@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/unit/*.test.mjs",
+    "pretest:rules": "curl -fsSL https://raw.githubusercontent.com/groupestudioprism/Studio-Prism/main/firebase/firestore.rules -o firebase/firestore.rules",
     "test:rules": "firebase emulators:exec --only firestore --project demo-nexus \"node --test tests/rules/*.test.mjs\"",
     "serve": "python3 -m http.server 8000",
     "emulators": "firebase emulators:start --only auth,firestore --project demo-nexus"

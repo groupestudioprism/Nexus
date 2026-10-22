@@ -5,7 +5,7 @@ Trois niveaux, tous exécutés le 22 octobre 2026 sur cette version. **Aucun tes
 | Niveau | Commande | Résultat |
 | --- | --- | --- |
 | Unitaires (Node, modules purs) | `npm test` | **37 / 37** |
-| Règles Firestore (émulateur, fichier complet `firebase/firestore.rules`) | `npm run test:rules` | **23 / 23** |
+| Règles Firestore (émulateur, fichier complet `firebase/firestore.rules`, à télécharger depuis Studio-Prism — voir firebase/README.md) | `npm run test:rules` | **23 / 23** |
 | Règles — variante sans les blocs SPECTRA (règles des dépôts Archi + Nexus) | `RULES_FILE=… npm run test:rules` | 22 / 23 : seule la création SPECTRA Writer échoue, comme attendu (bloc SPECTRA absent) |
 | Bout en bout (Chromium + émulateurs Auth/Firestore) | voir ci-dessous | **71 / 71** |
 
