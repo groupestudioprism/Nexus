@@ -1,0 +1,61 @@
+/* Nexus — animation d'ouverture (voir src/ui/intro.js). CSS keyframes uniquement : transform, opacity, stroke-dashoffset. */
+#nx-intro {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 42%, #0D2D78 0%, #071B55 46%, #04112F 100%);
+  color: #EAF2FF; transition: opacity 450ms cubic-bezier(.22, .8, .2, 1);
+  --in: cubic-bezier(.22, .8, .2, 1); --io: cubic-bezier(.65, 0, .35, 1);
+}
+#nx-intro.is-leaving { opacity: 0; pointer-events: none; }
+.nxi-stage { position: relative; width: min(92vw, 76vh, 560px); aspect-ratio: 1; font-size: min(5.6vw, 4.6vh, 33px); }
+.nxi-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+/* tracés */
+.nxi-ring, .nxi-link { opacity: .9; fill: none; stroke: #9FD8FF; stroke-width: .8; }
+.nxi-ring { stroke: #7FA6F0; }
+.nxi-trace path { stroke: #8EEAFF; stroke-width: 1.3; }
+.nxi-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: nxi-draw var(--t, 600ms) var(--io) var(--d, 0ms) both; }
+.nxi-ring, .nxi-link { animation: nxi-draw var(--t, 600ms) var(--io) var(--d, 0ms) both, nxi-calm 700ms linear 2000ms both; }
+.nxi-link.nxi-late { animation: nxi-draw var(--t, 600ms) var(--io) var(--d, 0ms) both; opacity: var(--o, .1); }
+.nxi-out { animation: nxi-draw var(--t) var(--io) var(--d) both, nxi-fadeout 450ms linear 2050ms both; }
+@keyframes nxi-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes nxi-calm { from { opacity: .9; } to { opacity: var(--o, .2); } }
+@keyframes nxi-fadeout { to { opacity: 0; } }
+.nxi-fadein { opacity: 0; animation: nxi-fadein var(--t, 450ms) var(--in) var(--d, 0ms) both; }
+@keyframes nxi-fadein { from { opacity: 0; } to { opacity: var(--o, 1); } }
+
+/* points (applications) et impulsions */
+.nxi-node-in { transform-box: fill-box; transform-origin: center; animation: nxi-pop 520ms var(--in) var(--d, 0ms) both, nxi-settle 600ms var(--io) 2150ms both; }
+.nxi-halo { fill: none; stroke-width: 1.2; stroke-opacity: .55; }
+.nxi-dot { stroke: #CFE0FF; stroke-opacity: .7; stroke-width: 1; }
+@keyframes nxi-pop { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
+@keyframes nxi-settle { from { opacity: 1; transform: scale(1); } to { opacity: .55; transform: scale(.8); } }
+.nxi-pulse { fill: #C4F4FF; opacity: 0; animation: nxi-run var(--t, 560ms) var(--io) var(--d, 0ms) both; }
+@keyframes nxi-run { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
+.nxi-arrive { fill: none; stroke: #8EEAFF; stroke-width: 1.2; opacity: 0; transform-box: fill-box; transform-origin: center; animation: nxi-arrive 520ms var(--in) var(--d) forwards; }
+@keyframes nxi-arrive { 0% { opacity: .9; transform: scale(.2); } 100% { opacity: 0; transform: scale(1); } }
+
+/* mot NEXUS : même composition que la marque (Sora, très espacé), sous le symbole */
+.nxi-word { position: absolute; left: 0; right: 0; top: 71.5%; transform: translateY(-50%); text-align: center; font-family: var(--font-display, "Sora", system-ui, sans-serif); font-weight: 600; font-size: 1em; letter-spacing: .32em; margin-right: -.32em; color: #EAF2FF; line-height: 1; white-space: nowrap; }
+.nxi-word span { display: inline-block; opacity: 0; animation: nxi-letter 520ms var(--in) var(--d, 0ms) both; }
+@keyframes nxi-letter { from { opacity: 0; transform: translateY(.3em); } to { opacity: 1; transform: none; } }
+
+/* état de chargement : fine barre sous le mot, seulement si la session n'est pas prête après la scène */
+.nxi-load { position: absolute; left: 50%; top: 79%; width: 22%; height: 2px; margin-left: -11%; border-radius: 2px; background: rgba(143, 178, 240, .22); overflow: hidden; opacity: 0; transition: opacity 250ms linear; }
+.nxi-load i { position: absolute; inset: 0; width: 40%; background: #5FD3EA; border-radius: 2px; animation: nxi-slide 1.2s var(--io) infinite; }
+@keyframes nxi-slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+.is-waiting .nxi-load { opacity: 1; }
+.nxi-load i { animation-play-state: paused; } .is-waiting .nxi-load i { animation-play-state: running; }
+
+/* passer */
+.nxi-skip { position: absolute; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%); min-height: 40px; padding: 8px 18px; border-radius: 999px; border: 1px solid rgba(207, 224, 255, .5); background: rgba(7, 27, 85, .6); color: #E6EEFF; font: 500 .875rem/1 var(--font-ui, system-ui, sans-serif); cursor: pointer; opacity: 0; animation: nxi-fadein-plain 400ms linear 400ms both; }
+.nxi-skip:hover { background: rgba(255, 255, 255, .12); }
+.nxi-skip:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.nxi-skip[hidden], .is-final .nxi-skip, .is-leaving .nxi-skip { display: none; }
+@keyframes nxi-fadein-plain { to { opacity: 1; } }
+.nxi-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* image finale directe (réduction des mouvements, « Passer ») : pas de délai, pas de durée */
+#nx-intro.is-static *, #nx-intro.is-static *::before, #nx-intro.is-static *::after { animation-delay: 0s !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+#nx-intro.is-static { transition-duration: 150ms; }
+#nx-intro.is-static .nxi-load i { animation-duration: 1.2s !important; animation-iteration-count: infinite !important; }
+@media (prefers-reduced-motion: reduce) { #nx-intro { transition-duration: 150ms !important; } #nx-intro .nxi-load i { animation: none !important; width: 100%; opacity: .6; } }

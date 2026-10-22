@@ -30,6 +30,7 @@ def check(name, ok, detail=""):
 
 async def new_page(browser, w=1440, h=900, mobile=False):
     ctx = await browser.new_context(viewport={"width": w, "height": h}, is_mobile=mobile, has_touch=mobile, locale="fr-FR")
+    await ctx.add_init_script("try{sessionStorage.setItem('prism-intro-nexus','1')}catch(e){}")   # animation d'ouverture déjà vue : elle ne gêne pas les parcours
     page = await ctx.new_page()
     page.errors = []
     page.on("pageerror", lambda e: page.errors.append(str(e)))

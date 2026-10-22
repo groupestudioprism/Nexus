@@ -11,6 +11,7 @@ import { notice } from "./ui/components.js";
 import { icon } from "./ui/icons.js";
 import { onLive, pendingConfirmations } from "./workflows/live.js";
 import * as repo from "./data/repo.js";
+import * as intro from "./ui/intro.js";
 
 const app = document.getElementById("app");
 const lazy = (name) => () => import(`./ui/pages/${name}.js`);
@@ -129,6 +130,7 @@ async function applyPrefs(st) {
 
 let lastStatus = "", lastUid = "";
 session.subscribe((st) => {
+  intro.notify(st.status);   // le voile d'ouverture attend la fin du chargement de session, sans jamais la retarder
   const uidNow = st.user ? st.user.uid : "";
   if (st.status !== lastStatus || uidNow !== lastUid) {
     if (uidNow !== lastUid) hub.reset();
