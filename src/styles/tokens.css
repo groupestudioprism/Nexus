@@ -1,0 +1,43 @@
+/* Nexus — jetons de design. Mode clair de référence (pas de thème sombre : aucune nécessité fonctionnelle).
+   Parenté Studio Prism : bleu nuit #071B55, bleu #0877B9, cyan #1F89C5, turquoise #169999 (css/style.css du site).
+   Personnalité Nexus : le bleu nuit sert d'encre (texte), les accents restent rares, la seule pièce graphique forte est la carte
+   des connexions de l'accueil. */
+:root {
+  color-scheme: light;
+  --paper: #F5F8FC;          /* fond de l'application */
+  --surface: #FFFFFF;
+  --surface-2: #EEF3F9;      /* zones en retrait, survols */
+  --ink: #0B1B4D;            /* texte principal : bleu nuit */
+  --ink-2: #3D4E74;          /* texte secondaire */
+  --muted: #5E6C92;
+  --line: #DCE5F0;
+  --line-strong: #C5D2E3;
+
+  --blue: #2457D6;
+  --blue-ink: #1C47B5;       /* liens, contraste AA sur blanc */
+  --cyan: #1FB6DA;
+  --turq: #0E9C90;
+  --night: #071B55;
+  --accent-grad: linear-gradient(135deg, #2F7FF2 0%, #22C3E3 55%, #11B3A4 100%);
+
+  --ok: #08704C;     --ok-bg: #E4F6EE;
+  --warn: #A55A00;   --warn-bg: #FFF3DF;
+  --err: #C0322B;    --err-bg: #FDECEA;
+  --info: #1C47B5;   --info-bg: #E7EEFD;
+  --idle: #5A6787;   --idle-bg: #EDF1F7;
+
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
+
+  /* échelle typographique (rapport ≈ 1,2) */
+  --fs-xs: .75rem; --fs-sm: .8125rem; --fs-base: .9375rem; --fs-md: 1.0625rem;
+  --fs-lg: 1.3125rem; --fs-xl: 1.625rem; --fs-2xl: 2.125rem;
+
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(11, 27, 77, .06);
+  --shadow-2: 0 10px 30px -12px rgba(11, 27, 77, .22), 0 2px 6px rgba(11, 27, 77, .06);
+  --rail: 248px;
+  --gutter: clamp(16px, 3vw, 36px);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --focus: 0 0 0 3px #fff, 0 0 0 5px #2457D6;
+}

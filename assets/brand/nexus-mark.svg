@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Nexus">
+  <defs>
+    <linearGradient id="nxL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F7FF2"/><stop offset=".62" stop-color="#2459DE"/><stop offset="1" stop-color="#3A3FC9"/>
+    </linearGradient>
+    <linearGradient id="nxR" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2D74EE"/><stop offset=".55" stop-color="#2496E6"/><stop offset="1" stop-color="#17C2C4"/>
+    </linearGradient>
+    <linearGradient id="nxD" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3ED8F5"/><stop offset=".55" stop-color="#22C3E3"/><stop offset="1" stop-color="#11B3A4"/>
+    </linearGradient>
+  </defs>
+  <path d="M16 24 34 14v66L16 90Z" fill="url(#nxL)"/>
+  <path d="M16 70 34 80 16 90Z" fill="#1B2FA6" opacity=".45"/>
+  <path d="M66 20 84 10v66L66 86Z" fill="url(#nxR)"/>
+  <path d="M66 20 84 10 84 30Z" fill="#fff" opacity=".18"/>
+  <path d="M16 24 34 14 84 76 66 86Z" fill="url(#nxD)" opacity=".93"/>
+  <path d="M25 19 75 81" stroke="#fff" stroke-opacity=".28" stroke-width="1"/>
+  <path d="M34 14 84 76" stroke="#fff" stroke-opacity=".55" stroke-width=".8"/>
+</svg>

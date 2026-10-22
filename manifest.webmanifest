@@ -1,0 +1,12 @@
+{
+  "name": "Nexus · Studio Prism",
+  "short_name": "Nexus",
+  "description": "Relier, coordonner et automatiser les applications Studio Prism.",
+  "lang": "fr",
+  "start_url": "./#/accueil",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F8FC",
+  "theme_color": "#071B55",
+  "icons": [{ "src": "assets/brand/nexus-app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

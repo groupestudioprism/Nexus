@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Nexus">
+  <rect width="128" height="128" rx="28" fill="#fff"/>
+  <rect x=".75" y=".75" width="126.5" height="126.5" rx="27.25" fill="none" stroke="#DCE7EF" stroke-width="1.5"/>
+  <g transform="translate(19 19) scale(.9)"><path d="M16 24 34 14v66L16 90ZM66 20 84 10v66L66 86ZM16 24 34 14 84 76 66 86Z" fill="#0B1B4D"/></g>
+</svg>
