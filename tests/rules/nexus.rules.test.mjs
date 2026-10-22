@@ -65,7 +65,7 @@ test("connexion : autorisations invalides refusées", async () => {
   await assertFails(setDoc(doc(db, "nxUsers/alice/connections/archiplan"), conn(["projects.read", "admin.all"])));
   await assertFails(setDoc(doc(db, "nxUsers/alice/connections/archiplan"), conn(["documents.create"])));       // écriture réservée à SPECTRA Writer
   await assertFails(setDoc(doc(db, "nxUsers/alice/connections/inconnue"), { ...conn(), appId: "inconnue" }));
-  await assertFails(setDoc(doc(db, "nxUsers/alice/connections/archiplan"), { ...conn(), appId: "archiindus" }));  // id ≠ appId
+  await assertFails(setDoc(doc(db, "nxUsers/alice/connections/archiplan"), { ...conn(), appId: "architrafic" }));  // id ≠ appId
   await assertFails(setDoc(doc(db, "nxUsers/alice/connections/archiplan"), conn([])));                              // active sans autorisation
   await assertSucceeds(setDoc(doc(db, "nxUsers/alice/connections/spectrawriter"), { ...conn(["projects.read", "documents.create"]), appId: "spectrawriter" }));
 });

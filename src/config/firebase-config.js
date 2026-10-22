@@ -1,7 +1,7 @@
 /* Configuration Web Firebase de Studio Prism (projet « archivision-studioprism »).
  *
  * Valeurs reprises À L'IDENTIQUE de groupestudioprism/Studio-Prism (js/firebase.js) et des applications
- * (tools/build.py d'ARCHIPLAN, ARCHITRAFIC, ARCHIINDUS, SPECTRA…) : Nexus utilise le MÊME projet et donc
+ * (tools/build.py d'ARCHIPLAN, ARCHITRAFIC, SPECTRA…) : Nexus utilise le MÊME projet et donc
  * les MÊMES comptes Studio Prism. Aucun nouveau projet ni aucune nouvelle application Firebase n'est créé.
  *
  * Cette configuration est PUBLIQUE par conception (documentation Firebase) : elle identifie le projet mais ne

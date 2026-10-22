@@ -21,7 +21,6 @@ export const SCOPES = Object.freeze({
 const ARCHI_FEATURES = {
   archiplan: ["Modélisation 3D du bâtiment sur téléphone, tablette et ordinateur", "Cloud des projets, dossiers et partage par e-mail ou par lien", "Bibliothèque personnelle (matériaux, compositions de parois, familles)", "Compatible avec Archi Vision (réalité augmentée)"],
   architrafic: ["Routes barrées et déviations automatiques", "Simulation du trafic en 3D", "Documents de chantier (plan de signalisation, projet d'arrêté, avis aux riverains)", "Cloud des chantiers, dossiers et partage"],
-  archiindus: ["Plans industriels et réseaux techniques (réseaux humides, réseaux secs, CVC…)", "Pièces 3D sur noyau OpenCascade", "Échanges IFC4, DXF, STEP, STL", "Cloud des projets, dossiers et partage"]
 };
 
 export const APPS = Object.freeze([
@@ -47,18 +46,6 @@ export const APPS = Object.freeze([
     deepLink: (id) => `https://architraffic.studio-prism.com/#/p/${encodeURIComponent(id)}`,
     quota: "50 Mo pour tout compte actif, 1 Go administrateur",
     freeForAll: true,
-    scopes: ["catalog.read", "projects.read", "shared.read"],
-    writes: []
-  },
-  {
-    id: "archiindus", productId: "archiindus", name: "ARCHIINDUS", family: "archi",
-    tagline: "Plans industriels, réseaux techniques et pièces 3D",
-    url: "https://archiindus.studio-prism.com/",
-    color: "#1F89C5",
-    features: ARCHI_FEATURES.archiindus,
-    cloud: { prefix: "ai", items: "aiProjects", shares: "aiShares", kind: "project", noun: ["projet", "projets"] },
-    deepLink: (id) => `https://archiindus.studio-prism.com/#/p/${encodeURIComponent(id)}`,
-    quota: "10 Mo sans licence, 50 Mo avec licence, 1 Go administrateur",
     scopes: ["catalog.read", "projects.read", "shared.read"],
     writes: []
   },

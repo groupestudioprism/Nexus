@@ -1,7 +1,7 @@
 /* Connecteurs de données des applications Studio Prism.
  *
  * MÉCANISME D'INTÉGRATION RÉEL : les applications enregistrent leurs projets et documents dans le MÊME projet Firestore que Nexus,
- * protégés par leurs propres règles (bloc ARCHIPLAN, ARCHITRAFIC, ARCHIINDUS, SPECTRA… du fichier de règles commun). Connecté avec
+ * protégés par leurs propres règles (bloc ARCHIPLAN, ARCHITRAFIC, SPECTRA… du fichier de règles commun). Connecté avec
  * le même compte Studio Prism, Nexus lit ces données AVEC VOS DROITS, exactement comme l'application : vos projets
  * (`where ownerUid == vous`) et ce qui vous est partagé par e-mail (`where email == votre e-mail`). Les règles de chaque application
  * restent seules juges : Nexus n'obtient aucun droit supplémentaire, et ne voit jamais les données des autres comptes.

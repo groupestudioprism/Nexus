@@ -101,7 +101,7 @@ async def main():
         await go(page, "/applications")
         await page.wait_for_selector(".tile")
         tiles = await page.locator(".tile").count()
-        check("7 applications affichées", tiles == 7, str(tiles))
+        check("6 applications affichées", tiles == 6, str(tiles))
         txt = await page.inner_text("#nx-main")
         check("licence ARCHIPLAN Pro affichée", "Licence Pro" in txt)
         check("aucune application « Connectée » sans autorisation", "Connectée" not in txt.replace("« Connectée »", ""))
@@ -115,7 +115,7 @@ async def main():
         await page.click("dialog.dlg [data-x=ok]")
         await page.wait_for_selector(".toast:has-text('accès vérifié')", timeout=20000)
         check("connexion ARCHIPLAN accordée et vérifiée", True)
-        for app in ("architrafic", "archiindus", "spectrawriter"):
+        for app in ("architrafic", "spectrawriter"):
             await page.click(f"button[data-act=edit][data-app={app}]")
             await page.wait_for_selector("dialog.dlg")
             if app == "spectrawriter":

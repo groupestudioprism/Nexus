@@ -12,7 +12,7 @@ export function authArt() {
     <a class="brand" href="#/decouvrir"><img src="assets/brand/nexus-mark.svg" alt="" width="30" height="30"><span class="brand-word">NEXUS</span></a>
     <div class="art"><img src="assets/brand/nexus-mark.svg" alt=""></div>
     <p class="claim">Vos applications Studio Prism, enfin reliées.</p>
-    <p class="claim-sub">Retrouvez vos projets ARCHIPLAN, ARCHITRAFIC, ARCHIINDUS et SPECTRA au même endroit, autorisez ce que Nexus peut faire, et enchaînez les tâches d'une application à l'autre.</p>
+    <p class="claim-sub">Retrouvez vos projets ARCHIPLAN, ARCHITRAFIC et SPECTRA au même endroit, autorisez ce que Nexus peut faire, et enchaînez les tâches d'une application à l'autre.</p>
     <p class="studio">Une application Studio Prism · même compte que le site et les applications</p>
   </section>`;
 }
