@@ -1,0 +1,19 @@
+/* Menu contextuel Studio Prism (clic droit / appui long) — mêmes classes dans toutes les apps ; couleurs reprises des jetons de Nexus */
+.pctx{position:fixed;z-index:200;min-width:220px;max-width:min(340px,calc(100vw - 12px));max-height:calc(100vh - 12px);overflow:auto;padding:5px;border-radius:var(--r-md,10px);
+  background:var(--surface,#fff);color:var(--ink,#0B1B4D);border:1px solid var(--line,#DCE5F0);box-shadow:var(--shadow-2,0 10px 30px -12px rgba(11,27,77,.22));
+  font:500 var(--fs-sm,.8125rem) var(--font-ui,system-ui,sans-serif);outline:none;animation:pctxIn .11s ease-out;-webkit-user-select:none;user-select:none}
+@keyframes pctxIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pctx{animation:none}}
+.pctx-h{padding:6px 10px 5px;font:700 var(--fs-xs,.75rem) var(--font-display,system-ui,sans-serif);letter-spacing:.05em;text-transform:uppercase;color:var(--muted,#5E6C92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pctx-sep{height:1px;margin:4px 6px;background:var(--line,#DCE5F0)}
+.pctx-i{display:flex;align-items:center;gap:8px;width:100%;padding:7px 10px;border:0;border-radius:var(--r-sm,6px);background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.pctx-i:hover:not(:disabled),.pctx-i:focus-visible,.pctx-i.open{background:var(--surface-2,#EEF3F9);outline:none}
+.pctx-i:focus-visible{box-shadow:inset 0 0 0 2px var(--blue,#2457D6)}
+.pctx-i:disabled{opacity:.42;cursor:default}
+.pctx-i.danger{color:var(--err,#C0322B)}
+.pctx-ic{flex:0 0 16px;text-align:center;font-weight:700;color:var(--blue,#2457D6)}
+.pctx-t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pctx-k{margin-left:12px;font:600 var(--fs-xs,.75rem) var(--font-ui,system-ui,sans-serif);color:var(--muted,#5E6C92);background:var(--idle-bg,#EDF1F7);border-radius:5px;padding:1px 6px}
+.pctx-ar{margin-left:8px;color:var(--muted,#5E6C92);font-size:15px;line-height:1}
+.tile,.li,.step{-webkit-touch-callout:none}
+@media (pointer:coarse){.pctx{min-width:260px}.pctx-i{padding:12px 12px;font-size:.9375rem}}

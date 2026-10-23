@@ -12,6 +12,7 @@ import { icon } from "./ui/icons.js";
 import { onLive, pendingConfirmations } from "./workflows/live.js";
 import * as repo from "./data/repo.js";
 import * as intro from "./ui/intro.js";
+import { installContextMenu } from "./ui/ctxmenu.js";
 
 const app = document.getElementById("app");
 const lazy = (name) => () => import(`./ui/pages/${name}.js`);
@@ -141,6 +142,7 @@ session.subscribe((st) => {
   }
 });
 window.addEventListener("hashchange", render);
+installContextMenu();   // clic droit / appui long : actions de ce qu'on vise (application, connexion, automatisation, étape, lien, page)
 onLive(() => {
   const n = pendingConfirmations();
   const a = document.querySelector('.nav a[href="#/automatisations"]');
