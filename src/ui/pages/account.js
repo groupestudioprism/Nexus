@@ -36,9 +36,9 @@ export async function render({ root, state }) {
           </dl>
           <p class="small muted" style="margin-top:14px">Nom, mot de passe, type de compte et suppression du compte : sur le site Studio Prism (Mon compte). Le rôle et l'abonnement sont gérés par Studio Prism.</p>
         </div></section>
-        <section class="panel"><div class="panel-head"><h2>Mes licences</h2><span class="spacer"></span><button class="btn ghost sm" data-act="refresh">${icon("refresh")}Actualiser</button></div><div class="panel-body">
+        <section class="panel"><div class="panel-head"><h2>Mes licences</h2><span class="spacer"></span><a class="btn ghost sm" href="${APP_CONFIG.SITE_URL}#/activer" target="_blank" rel="noopener">${icon("external")}Activer une clé</a><button class="btn ghost sm" data-act="refresh">${icon("refresh")}Actualiser</button></div><div class="panel-body">
           ${lics == null ? notice("warn", "Vos licences n'ont pas pu être lues. Réessayez avec « Actualiser ».") : lics.length ? html`<ul class="list">${lics.map((l) => { const s = licenseState(l); return html`<li class="li"><div class="li-main"><div class="li-title">${l.productName || appById(l.productId)?.name || l.productId}</div><div class="li-sub">${LIC_LABEL[l.licenseType] || l.licenseType} · ${l.expiresAt ? `jusqu'au ${dateLabel(l.expiresAt)}` : "sans date de fin"}</div></div>${pill(s === "active" ? "ok" : s === "expired" ? "warn" : s === "suspended" ? "err" : "", s === "active" ? "Active" : s === "expired" ? "Expirée" : s === "suspended" ? "Suspendue" : "Inactive")}</li>`; })}</ul>`
-            : empty({ icon: "info", title: "Aucune licence", text: "Les applications restent utilisables avec leur offre gratuite. Les licences sont attribuées par Studio Prism." })}
+            : empty({ icon: "info", title: "Aucune licence", text: "Les applications restent utilisables avec leur offre gratuite. Vous avez reçu une clé (ou une clé pack) ? « Activer une clé » l'active sur le site Studio Prism, puis « Actualiser »." })}
         </div></section>
       </div>
       <aside class="stack" style="--gap:20px">
