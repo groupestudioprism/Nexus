@@ -9,6 +9,7 @@ import * as hub from "../../data/hub.js";
 import * as repo from "../../data/repo.js";
 import { notice, empty, toast, busy, confirmDialog, pill } from "../components.js";
 import { icon } from "../icons.js";
+import { BYOK_PROVIDERS, BYOK_LIMITS } from "../../axion/byok.js";
 
 const thread = [];   // conversation de cet onglet uniquement : jamais enregistrée
 
@@ -16,6 +17,7 @@ export async function render({ root, state }) {
   const uid = state.user.uid;
   let usage = null, ctrl = null, pending = false, recentCount = 0;
   await axion.loadSettings(true);
+  await axion.refreshByok();
   try { await hub.loadConnections(); } catch (e) { /* sans connexions : AXION répond sans contexte */ }
 
   const statusPanel = () => {
@@ -33,6 +35,19 @@ export async function render({ root, state }) {
       <p class="muted">N'envoyez pas d'informations confidentielles ou personnelles sensibles.</p>
     </div></section>`;
   };
+
+
+  const byokPanel = () => html`<section class="panel"><div class="panel-head"><h2>Ma clé API</h2><span class="spacer"></span>${axion.usingByok() ? pill("ok", "Active") : ""}</div><div class="panel-body stack small" style="--gap:10px">
+    ${notice("warn", "Votre clé reste chiffrée dans ce navigateur : elle n'est jamais envoyée à Nexus, mais vos demandes partent directement chez le fournisseur choisi, à vos frais et selon ses conditions. Ne l'utilisez pas sur un ordinateur partagé ; utilisez une clé dédiée avec plafond de dépenses. AXION n'a aucun droit administrateur : il ne peut que proposer, vous confirmez.")}
+    <form id="byok" class="stack" style="--gap:8px" autocomplete="off">
+      <label>Fournisseur <select class="input" name="provider">${Object.entries(BYOK_PROVIDERS).map(([k, v]) => html`<option value="${k}">${v.label}</option>`)}</select></label>
+      <label>Modèle <input class="input" name="model" value="${BYOK_PROVIDERS.anthropic.model}" maxlength="100"></label>
+      <label>Endpoint (compatible OpenAI uniquement, https) <input class="input" name="endpoint" placeholder="https://exemple.com/v1" maxlength="200"></label>
+      <label>Clé API <input class="input" name="key" type="password" autocomplete="off" spellcheck="false" maxlength="400"></label>
+      <div class="row"><button class="btn primary sm" type="submit">Enregistrer localement</button>${axion.usingByok() ? html`<button type="button" class="btn danger sm" data-act="byok-clear">Supprimer la clé</button>` : ""}</div>
+    </form>
+    <p class="muted">Limites : ${BYOK_LIMITS.perMinute} demandes/minute, ${BYOK_LIMITS.perDay}/jour.</p>
+  </div></section>`;
 
   const msgHtml = (m, i) => m.role === "me" ? html`<div class="msg me"><div class="who">Vous</div><div class="txt"><p>${m.text}</p></div></div>`
     : m.role === "err" ? notice("err", m.text)
@@ -61,9 +76,20 @@ export async function render({ root, state }) {
                 <span class="spacer"></span>${pending ? html`<button type="button" class="btn danger" data-act="stop">${icon("stop")}Arrêter</button>` : html`<button class="btn primary" type="submit">${icon("send")}Envoyer</button>`}</div>
             </form>`}
         </div>
-        <aside class="stack" style="--gap:16px">${statusPanel()}</aside>
+        <aside class="stack" style="--gap:16px">${statusPanel()}${byokPanel()}</aside>
       </div>`);
     const f = $("#ask", root);
+    const bf = $("#byok", root);
+    if (bf) {
+      bf.provider.onchange = () => { bf.model.value = BYOK_PROVIDERS[bf.provider.value].model; };
+      bf.onsubmit = async (e) => {
+        e.preventDefault();
+        try {
+          await axion.byokStore.saveConfig(uid, { provider: bf.provider.value, model: bf.model.value.trim(), endpoint: bf.endpoint.value.trim(), key: bf.key.value.trim() });
+          bf.key.value = ""; await axion.refreshByok(); toast("Clé enregistrée (chiffrée, sur cet appareil)."); draw();
+        } catch (x) { toast(x.message || errorMessage(x), "err"); }
+      };
+    }
     if (f) f.onsubmit = (e) => { e.preventDefault(); send(); };
     const q = $("#q", root);
     if (q && typed && !pending) { q.value = typed; if (hadFocus) q.focus(); }
@@ -95,6 +121,10 @@ export async function render({ root, state }) {
   }
 
   const off = delegate(root, {
+    "byok-clear": async () => {
+      if (!(await confirmDialog({ title: "Supprimer la clé API ?", body: html`<p>La clé chiffrée sera effacée de cet appareil.</p>`, confirmLabel: "Supprimer" }))) return;
+      await axion.byokStore.clearConfig(uid); await axion.refreshByok(); draw();
+    },
     stop: () => ctrl && ctrl.abort(),
     test: async (e, b) => {
       busy(b, true, "Test…");

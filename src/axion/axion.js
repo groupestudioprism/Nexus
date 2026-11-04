@@ -12,10 +12,17 @@ import { dayKey } from "../core/format.js";
 import { isAdmin, licenseState } from "../core/permissions.js";
 import { makeProvider } from "./provider.js";
 import "./providers/firebase-ai-logic.js";
+import * as byok from "./providers/byok.js";
+import { INJECTION_GUARD, sanitizeUntrusted } from "./byok.js";
 import { DEFAULT_SETTINGS, dailyLimitFor, parseAxionResponse, systemPrompt } from "./protocol.js";
 import * as repo from "../data/repo.js";
 
-let settings = null, settingsErr = null, lastTest = null;
+let settings = null, settingsErr = null, lastTest = null, byokOn = false;
+
+/* Clé personnelle : mode local (voir docs/AXION-CLE-PERSONNELLE.md). */
+export const byokStore = byok;
+export async function refreshByok() { const st = getState(); byokOn = !!(st.user && await byok.hasConfig(st.user.uid).catch(() => false)); return byokOn; }
+export const usingByok = () => byokOn;
 
 export async function loadSettings(force = false) {
   if (settings && !force) return settings;
@@ -31,6 +38,7 @@ export async function loadSettings(force = false) {
 export function status() {
   if (settingsErr) return { state: "error", code: settingsErr.code || "unknown" };
   if (!settings) return { state: "loading" };
+  if (byokOn) return { state: lastTest ? (lastTest.ok ? "ok" : "failing") : "ready", backend: "byok", model: "clé personnelle", detail: lastTest && lastTest.detail, at: lastTest && lastTest.at };
   if (!settings.enabled) return { state: "off", missing: !!settings.missing };
   const base = { backend: settings.backend, model: settings.model, appCheck: appCheckEnabled() };
   if (lastTest) return { state: lastTest.ok ? "ok" : "failing", ...base, detail: lastTest.detail, at: lastTest.at };
@@ -51,6 +59,12 @@ export async function usageToday() {
 
 async function call({ prompt, json = true, signal, apps = [] }) {
   await loadSettings();
+  await refreshByok();
+  if (byokOn) {
+    const st = getState();
+    const p = makeProvider("byok", { uid: st.user.uid });
+    return withTimeout(p.generate({ system: systemPrompt({ firstName: sanitizeUntrusted(st.profile.firstName, 40), apps }) + "\n" + INJECTION_GUARD, prompt, json, signal, settings }), APP_CONFIG.TIMEOUTS.ai, "nx/axion-unavailable");
+  }
   if (!settings || !settings.enabled) throw nxError("nx/axion-off");
   const { uid, limit } = quotaInfo();
   const day = dayKey();
@@ -81,7 +95,7 @@ export async function testConnection() {
 /* Demande à AXION. ctx : { question, items (métadonnées transmises), connectedApps, signal } */
 export async function ask({ question, items = [], connectedApps = [], signal }) {
   const known = new Map(items.map((i) => [i.appId + "|" + i.id, i]));
-  const listing = items.length ? "\n\nÉléments transmis (métadonnées uniquement) :\n" + items.map((i) => `- app=${i.appId} id=${i.id} nom="${String(i.name).replace(/"/g, "'")}" modifié=${i.updatedAt ? new Date(i.updatedAt).toISOString().slice(0, 10) : "?"}${i.shared ? " partagé" : ""}`).join("\n") : "";
+  const listing = items.length ? "\n\n<donnees>\nÉléments transmis (métadonnées uniquement) :\n" + items.map((i) => `- app=${sanitizeUntrusted(i.appId, 40)} id=${sanitizeUntrusted(i.id, 120)} nom="${String(i.name).replace(/"/g, "'")}" modifié=${i.updatedAt ? new Date(i.updatedAt).toISOString().slice(0, 10) : "?"}${i.shared ? " partagé" : ""}`).join("\n") + "\n</donnees>" : "";
   const text = await call({ prompt: `Demande : ${question}${listing}`, signal, apps: connectedApps });
   return parseAxionResponse(text, { known, connectedApps });
 }

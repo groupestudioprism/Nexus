@@ -40,6 +40,7 @@ const MESSAGES = {
   "nx/invalid": "Données invalides.",
   "nx/cancelled": "Opération annulée.",
   "nx/axion-off": "AXION n'est pas configuré. Un administrateur doit l'activer (Administration → AXION).",
+  "nx/axion-config": "Réglage de la clé personnelle AXION invalide.",
   "nx/axion-limit": "Limite quotidienne de demandes à AXION atteinte. Le compteur repart demain.",
   "nx/axion-unavailable": "AXION n'a pas pu répondre (service non activé dans la console Firebase, App Check manquant ou quota atteint).",
   "nx/axion-format": "AXION a renvoyé une réponse inexploitable. Reformulez la demande.",
