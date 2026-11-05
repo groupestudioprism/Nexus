@@ -43,6 +43,9 @@ const MESSAGES = {
   "nx/axion-config": "Réglage de la clé personnelle AXION invalide.",
   "nx/axion-limit": "Limite quotidienne de demandes à AXION atteinte. Le compteur repart demain.",
   "nx/axion-unavailable": "AXION n'a pas pu répondre (service non activé dans la console Firebase, App Check manquant ou quota atteint).",
+  "nx/axion-key": "Clé API refusée par le fournisseur (incorrecte, révoquée ou sans accès au modèle).",
+  "nx/axion-quota": "Quota ou limite de débit atteint chez le fournisseur de votre clé.",
+  "nx/axion-network": "Connexion impossible au fournisseur (réseau, CORS ou politique de sécurité du site).",
   "nx/axion-format": "AXION a renvoyé une réponse inexploitable. Reformulez la demande.",
   "nx/not-verified": "L'opération a été envoyée mais son résultat n'a pas pu être vérifié."
 };
@@ -55,6 +58,7 @@ export function errorCode(err) {
 
 export function errorMessage(err) {
   const c = errorCode(err);
+  if (/^nx\/axion-(key|quota|network)$/.test(c) && err && err.detail) return err.detail;
   if (MESSAGES[c]) return MESSAGES[c];
   if (c.startsWith("auth/")) return "La connexion a échoué. Réessayez.";
   if (err && err.userMessage) return err.userMessage;

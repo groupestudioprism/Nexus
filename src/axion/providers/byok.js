@@ -1,6 +1,6 @@
 /* Fournisseur AXION « clé personnelle » : appel direct navigateur → fournisseur choisi. La clé est chiffrée localement (AES-GCM,
  * clé non extractible en IndexedDB, par compte) ; elle n'est jamais envoyée à Nexus/Firestore ni écrite dans les journaux. */
-import { buildRequest, extractText, redactKey, validateConfig, checkRate } from "../byok.js";
+import { classifyHttp, buildRequest, extractText, redactKey, validateConfig, checkRate } from "../byok.js";
 import { registerProvider } from "../provider.js";
 
 const DB = "nx-axion-byok", ST = "kv";
@@ -39,12 +39,12 @@ export function createByokProvider({ uid, signal: _s }) {
       const q = buildRequest(cfg, { system, prompt, json });
       try {
         const res = await fetch(q.url, { method: "POST", headers: q.headers, body: JSON.stringify(q.body), signal, credentials: "omit", referrerPolicy: "no-referrer", cache: "no-store" });
-        if (!res.ok) throw Object.assign(new Error("http"), { code: "nx/axion-unavailable", detail: `Le fournisseur a répondu ${res.status}.` });
+        if (!res.ok) throw Object.assign(new Error("http"), classifyHttp(res.status, cfg.provider));
         return extractText(cfg.provider, await res.json());
       } catch (e) {
         if (e.code) throw e;
         if (e.name === "AbortError") throw e;
-        throw Object.assign(new Error("net"), { code: "nx/axion-unavailable", detail: redactKey(e.message, cfg.key) });
+        throw Object.assign(new Error("net"), { code: "nx/axion-network", detail: "Connexion impossible au fournisseur (réseau, CORS ou politique CSP du site). " + redactKey(e.message, cfg.key) });
       }
     }
   };

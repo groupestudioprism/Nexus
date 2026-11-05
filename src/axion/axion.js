@@ -86,7 +86,7 @@ export async function testConnection() {
     const r = parseAxionResponse(t);
     lastTest = { ok: true, at: Date.now(), detail: r.reply };
   } catch (e) {
-    lastTest = { ok: false, at: Date.now(), detail: e.code === "nx/axion-unavailable" ? (e.detail || e.code) : e.code };
+    lastTest = { ok: false, at: Date.now(), detail: e.detail || e.code };
     throw e;
   }
   return lastTest;

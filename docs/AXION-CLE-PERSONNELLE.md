@@ -14,5 +14,8 @@ Chaque personne peut faire fonctionner AXION avec sa propre clé : Anthropic, Op
 9. **Endpoint personnalisé** : HTTPS, hôte public (pas de localhost, IP privée, identifiants dans l'URL).
 10. **Avertissement UI** : panneau « Ma clé API » (frais à la charge de la personne, appareil non partagé, clé dédiée plafonnée).
 
+## Erreurs précises
+Format de clé invalide (local), clé refusée 401/403 (`nx/axion-key`), quota 429 (`nx/axion-quota`), réseau/CORS/CSP (`nx/axion-network`). La CSP `connect-src` d'index.html autorise les 4 fournisseurs et `https:` (endpoint compatible personnalisé ; hôtes privés refusés par `validateEndpoint`). Test : `python3 tests/e2e/test_byok.py`.
+
 ## Limite connue
 Stockée dans le navigateur, la clé reste exposée à un script malveillant de la même origine (XSS) : d'où la CSP et l'échappement systématique.

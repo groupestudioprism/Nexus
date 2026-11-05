@@ -23,7 +23,9 @@ export function validateEndpoint(url) {
 export function validateConfig(c) {
   const errors = [];
   if (!c || !BYOK_PROVIDERS[c.provider]) return ["Fournisseur inconnu."];
-  if (typeof c.key !== "string" || c.key.length < 8 || c.key.length > 400 || /\s/.test(c.key)) errors.push("Clé API invalide.");
+  if (typeof c.key !== "string" || !c.key) errors.push("Format de clé invalide : la clé est vide.");
+  else if (/\s/.test(c.key)) errors.push("Format de clé invalide : la clé contient des espaces ou retours à la ligne (recopiez-la sans eux).");
+  else if (c.key.length < 8 || c.key.length > 400) errors.push("Format de clé invalide : longueur inattendue (8 à 400 caractères).");
   if (typeof c.model !== "string" || !/^[a-z0-9][a-z0-9.\-_:/]{1,99}$/i.test(c.model)) errors.push("Nom de modèle invalide.");
   if (c.provider === "compatible") { const v = validateEndpoint(c.endpoint); if (!v.ok) errors.push(v.reason); }
   return errors;
@@ -53,6 +55,15 @@ export function extractText(provider, j) {
     : j?.choices?.[0]?.message?.content;
   if (typeof t !== "string" || !t.trim()) throw Object.assign(new Error("format"), { code: "nx/axion-format" });
   return t;
+}
+
+/* Classe une réponse HTTP du fournisseur en erreur précise (code Nexus + détail sans clé). */
+export function classifyHttp(status, provider) {
+  const l = (BYOK_PROVIDERS[provider] || {}).label || "Le fournisseur";
+  if (status === 401 || status === 403) return { code: "nx/axion-key", detail: `${l} a refusé la clé (HTTP ${status}) : clé incorrecte, révoquée ou sans accès à ce modèle.` };
+  if (status === 429) return { code: "nx/axion-quota", detail: `${l} signale un quota ou une limite de débit atteint (HTTP 429).` };
+  if (status === 404) return { code: "nx/axion-unavailable", detail: `${l} : modèle ou endpoint introuvable (HTTP 404). Vérifiez le nom du modèle et l'URL.` };
+  return { code: "nx/axion-unavailable", detail: `${l} a répondu HTTP ${status}.` };
 }
 
 /* Retire toute trace de la clé d'un texte (messages d'erreur, détails) avant affichage ou journal. */
