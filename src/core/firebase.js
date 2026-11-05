@@ -40,6 +40,7 @@ export function firebase() {
         F.connectFirestoreEmulator(db, APP_CONFIG.EMULATORS.firestoreHost, APP_CONFIG.EMULATORS.firestorePort);
         window.__nexusTest = { auth };   // tests de bout en bout uniquement (émulateurs locaux) : jamais défini en production
       }
+      window.PRISM_PRESENCE_USER = () => auth.currentUser;   // présence en direct (admin Studio Prism), voir prism-presence.js
       await initAppCheck(app, emu);
       return { app, auth, db, A, F, core, emu };
     })().catch((err) => {
