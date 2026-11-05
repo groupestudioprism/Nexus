@@ -9,7 +9,6 @@ Audit réalisé avant le développement de Nexus, en lecture seule, sur les dép
 | `Studio-Prism` | oui | Site, comptes, catalogue, licences, administration, CMS, règles Firestore/Storage, Cloud Functions (non déployées) |
 | `ArchiPlan` | oui | App de modélisation ; compte commun ; cloud `ap*` |
 | `ArchiTraffic` | oui | App ARCHITRAFIC ; cloud `at*` ; script `make_rules.py` |
-| `ArchiIndus` | oui | App ARCHIINDUS ; cloud `ai*` ; tests Chromium |
 | `ArchiVision` | oui | Visionneuse web + projet Unity (APK Android) ; **pas de cloud Firestore** |
 | `SpectraWriter`, `SpectraCalc`, `SpectraSlide` | oui | Gamme SPECTRA ; cloud `sw*` / `sc*` / `ss*` ; IA via Firebase AI Logic |
 | `Nexus` | oui | Vide au départ |
@@ -34,7 +33,7 @@ L'URL `https://github.com/Kmauger18/Studio-Prism` de la demande correspond à l'
 ## 3. Firebase et règles
 
 - Un **fichier de règles commun** contient le site et les blocs de chaque application. Deux versions coexistent dans les dépôts :
-  - 108 393 octets (Studio-Prism, ArchiPlan, ArchiTraffic, ArchiIndus) : site + ARCHIPLAN + ARCHITRAFIC + ARCHIINDUS ;
+  - 108 393 octets (Studio-Prism, ArchiPlan, ArchiTraffic) : site + ARCHIPLAN + ARCHITRAFIC ;
   - 150 743 octets (SpectraWriter, SpectraCalc, SpectraSlide) : la précédente (commentaires réduits) **+ les trois blocs SPECTRA**.
   La version réellement publiée dans la console n'est pas visible depuis le code : **à vérifier par le propriétaire** (voir `firebase/README.md`).
 - Principes : refus par défaut, administrateur = `role == 'admin'` et `status == 'active'` relus à chaque requête, validation stricte des champs, plafond de 20 `get()` par lot.
@@ -48,7 +47,7 @@ L'URL `https://github.com/Kmauger18/Studio-Prism` de la demande correspond à l'
 ## 5. Abonnements et licences
 
 - `products/{id}` (catalogue, lecture publique des produits publiés), `subscriptions` (formules), `prices` (prix), `licenses/{uid}_{produit}` (une licence par utilisateur et par produit, lisible par son titulaire avec `where userId == uid`), `licenseKeys` (clés d'activation), `organizations`.
-- Identifiants de produit utilisés par les applications : `archiplan`, `architrafic` (un seul « f »), `archiindus`, `archivision`, `spectrawriter`, `spectracalc`, `spectraslide`.
+- Identifiants de produit utilisés par les applications : `archiplan`, `architrafic` (un seul « f »), `archivision`, `spectrawriter`, `spectracalc`, `spectraslide`.
 - Aucun paiement en ligne : licences attribuées par un administrateur ou par clé.
 
 ## 6. Conventions graphiques
@@ -61,7 +60,6 @@ Site : Inter, bleu nuit `#071B55`, bleu `#0877B9`, cyan `#1F89C5`, turquoise `#1
 | --- | --- | --- | --- | --- |
 | ARCHIPLAN | `apProjects` (+ `content/main`), `apFolders`, `apShares`, `apUsage` | oui (vos projets, partages reçus) | non | `#/p/<id>` |
 | ARCHITRAFIC | `atProjects`… | oui | non | `#/p/<id>` |
-| ARCHIINDUS | `aiProjects`… | oui | non | `#/p/<id>` |
 | ARCHIVISION | aucune | non | non | page d'accueil |
 | SPECTRA Writer | `swDocs` (+ `content/main`), `swUsage`… | oui | **oui : création d'un document** (format `{v:1, app, title, html, theme, page}`, compteur de quota dans le même lot) | `#/doc/<id>` |
 | SPECTRA Calc / Slide | `scDocs` / `ssDocs`… | oui | non (le format de leurs contenus n'a pas été validé pour une écriture par Nexus) | `#/doc/<id>` |
